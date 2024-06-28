@@ -1,0 +1,4 @@
+local player = game.Players.LocalPlayer -- Change this to the player you want to modify
+
+-- Set player's health to NaN
+player.Character.Humanoid.Health = 0/0
