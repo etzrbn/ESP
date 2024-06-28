@@ -1,0 +1,38 @@
+local Players = game:GetService("Players")
+
+local function createPlayerHighlight(player)
+    local character = player.Character or player.CharacterAdded:Wait()
+    
+    local model = Instance.new("Model")
+    model.Name = "HighlightModel"
+    
+    local highlightPart = Instance.new("Part")
+    highlightPart.Size = character.HumanoidRootPart.Size * 1.1
+    highlightPart.Transparency = 0.5
+    highlightPart.BrickColor = BrickColor.new("Bright red")
+    highlightPart.Anchored = true
+    highlightPart.CanCollide = false
+    highlightPart.Parent = model
+    
+    local nameLabel = Instance.new("TextLabel")
+    nameLabel.Text = player.Name
+    nameLabel.Size = Vector2.new(100, 20)
+    nameLabel.TextColor3 = Color3.new(1, 1, 1)
+    nameLabel.Parent = highlightPart
+    nameLabel.Position = Vector2.new(-nameLabel.Size.X/2, nameLabel.Size.Y + 5)
+    
+    model:SetPrimaryPartCFrame(character.HumanoidRootPart.CFrame)
+    model.Parent = workspace
+    
+    character.Humanoid.Died:Connect(function()
+        model:Destroy()
+    end)
+end
+
+Players.PlayerAdded:Connect(function(player)
+    createPlayerHighlight(player)
+end)
+
+for _, player in pairs(Players:GetPlayers()) do
+    createPlayerHighlight(player)
+end
